@@ -1,0 +1,39 @@
+set(OATPP_VERSION "1.1.0")
+
+vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
+
+vcpkg_from_github(
+    OUT_SOURCE_PATH SOURCE_PATH
+    REPO oatpp/oatpp
+    REF 7a047df3901d56145c2fbbddcd14579ca6b04046 # 1.1.0
+    SHA512 9c2af5e81fbd2f2015cc12d2aefc0c8ea1f961418ceed437b0e1d619b7b8e2069730424745330a854c0c8ca8cc903b602e163481545fceaebd416120318f5b07
+    HEAD_REF master
+)
+
+if (VCPKG_LIBRARY_LINKAGE STREQUAL dynamic)
+    set(OATPP_BUILD_SHARED_LIBRARIES_OPTION "ON")
+else()
+    set(OATPP_BUILD_SHARED_LIBRARIES_OPTION "OFF")
+endif()
+
+if (VCPKG_CMAKE_SYSTEM_NAME STREQUAL Linux)
+    set(EXTRA_CXX_FLAGS "-D_CRT_SECURE_NO_WARNINGS -fPIC")
+else ()
+    set(EXTRA_CXX_FLAGS "-D_CRT_SECURE_NO_WARNINGS")
+endif ()
+
+vcpkg_configure_cmake(
+    SOURCE_PATH "${SOURCE_PATH}"
+    PREFER_NINJA
+    OPTIONS
+        "-DOATPP_BUILD_TESTS:BOOL=OFF"
+        "-DCMAKE_CXX_FLAGS=${EXTRA_CXX_FLAGS}"
+        "-DBUILD_SHARED_LIBS:BOOL=${OATPP_BUILD_SHARED_LIBRARIES_OPTION}"
+)
+
+vcpkg_install_cmake()
+vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/oatpp-${OATPP_VERSION})
+vcpkg_copy_pdbs()
+
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
+file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)

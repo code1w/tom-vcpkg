@@ -1,0 +1,13 @@
+diff --git a/x64-linux-dbg/msgpack-targets.cmake b/x64-linux-dbg/msgpack-targets.cmake
+index 4732a45..3de71cc 100644
+--- a/share/msgpack/msgpack-targets.cmake
++++ b/share/msgpack/msgpack-targets.cmake
+@@ -58,7 +58,7 @@ set_target_properties(msgpackc-cxx PROPE
+ )
+ 
+ # Create imported target msgpackc-static
+-add_library(msgpackc-static STATIC IMPORTED)
++add_library(msgpackc-static STATIC IMPORTED GLOBAL)
+ 
+ set_target_properties(msgpackc-static PROPERTIES
+   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"

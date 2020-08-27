@@ -1,0 +1,13 @@
+diff --git a/src/iniparser.c b/src/iniparser.c
+index f1d1658..136c0f6 100644
+--- a/src/iniparser.c
++++ b/src/iniparser.c
+@@ -44,6 +44,8 @@ typedef enum _line_status_ {
+ /*--------------------------------------------------------------------------*/
+ static const char * strlwc(const char * in, char *out, unsigned len)
+ {
++    strcpy(out, in);
++    return in;
+     unsigned i ;
+ 
+     if (in==NULL || out == NULL || len==0) return NULL ;
